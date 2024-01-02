@@ -12,6 +12,7 @@ public class Calificacion {
     private String retroalimentacion;
 
     public Calificacion() {
+        //rama ejemoplo cambio
     }
 
     public Calificacion(Integer id_estudiante, Integer id_docente, Integer id_materia, Integer nota, String retroalimentacion) {
