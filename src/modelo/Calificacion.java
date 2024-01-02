@@ -60,10 +60,14 @@ public class Calificacion {
 
     public void setRetroalimentacion(String retroalimentacion) {
         this.retroalimentacion = retroalimentacion;
+<<<<<<< HEAD
         System.out.println("Borramos luego borramos");
         System.out.println("s");
         System.out.println("Borramos luego borramos");
+=======
+        
+>>>>>>> 96670019b449f4f6cf2c830aeda446e36f686a59
     }
-    
+    System.out.println("Borramos luego");
     //jheheiejanasl
 }
