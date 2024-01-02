@@ -63,8 +63,6 @@ public class Calificacion {
         System.out.println("Borramos luego borramos");
         System.out.println("s");
         System.out.println("Borramos luego borramos");
-        System.out.println("volver a ver");
-                
     }
     
     //jheheiejanasl
