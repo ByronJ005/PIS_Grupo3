@@ -18,6 +18,8 @@ public class Cuenta {
         this.correo = correo;
         this.clave = clave;
         this.estado = estado;
+        //Comentario en rama Bayron
+        System.out.println("Cosas por borrar");
     }
 
     public Integer getId() {
