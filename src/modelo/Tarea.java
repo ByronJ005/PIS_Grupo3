@@ -36,7 +36,7 @@ public class Tarea {
 
     public Date getFechaEntrega() {
         return fechaEntrega;
-    }
+    } 
 
     public void setFechaEntrega(Date fechaEntrega) {
         this.fechaEntrega = fechaEntrega;
