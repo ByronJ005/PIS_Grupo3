@@ -1,0 +1,35 @@
+{
+    "controlador.TDALista.LinkedList": {
+        "head": {
+            "data": {
+                "@class": "modelo.Estudiante",
+                "id": 1,
+                "nombres": "israel",
+                "apellidos": "herrera",
+                "nacionalidad": "americano",
+                "fecha_nac": "2006-07-09 00:38:28.593 UTC",
+                "cedula": 11230529,
+                "telefono": "0988230513",
+                "titulo_bachiller": "Bachillerato en Ciencias"
+            },
+            "next": {
+                "data": {
+                    "@class": "modelo.Estudiante",
+                    "id": 2,
+                    "nombres": "felipe",
+                    "apellidos": "plex",
+                    "nacionalidad": "español",
+                    "fecha_nac": "2010-07-15 00:38:28.593 UTC",
+                    "cedula": 11230513,
+                    "telefono": "098821232321",
+                    "titulo_bachiller": "Bachillerato G.Unificado",
+                    "ciudad_Procedencia": "loja"
+                }
+            }
+        },
+        "last": {
+            "@reference": "..\/head\/next"
+        },
+        "size": 2
+    }
+}
