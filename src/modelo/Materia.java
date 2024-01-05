@@ -5,31 +5,41 @@ package modelo;
  * @author Asus
  */
 public class Materia {
-    private String nombreAsignatura;
-    private Boolean tieneCadena;
-
+    private Integer id;
+    private Integer id_curso;
+    private String nombre;
+    
     public Materia() {
     }
 
-    public Materia(String nombreAsignatura, Boolean tieneCadena) {
-        this.nombreAsignatura = nombreAsignatura;
-        this.tieneCadena = tieneCadena;
+    public Materia(Integer id, Integer id_curso, String nombre) {
+        this.id = id;
+        this.id_curso = id_curso;
+        this.nombre = nombre;
     }
 
-    public String getNombreAsignatura() {
-        return nombreAsignatura;
+    public Integer getId() {
+        return id;
     }
 
-    public void setNombreAsignatura(String nombreAsignatura) {
-        this.nombreAsignatura = nombreAsignatura;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public Boolean getTieneCadena() {
-        return tieneCadena;
+    public Integer getId_curso() {
+        return id_curso;
     }
 
-    public void setTieneCadena(Boolean tieneCadena) {
-        this.tieneCadena = tieneCadena;
+    public void setId_curso(Integer id_curso) {
+        this.id_curso = id_curso;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
     
     
