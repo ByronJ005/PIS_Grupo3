@@ -53,6 +53,7 @@ public class Cuenta {
 
     public void setEstado(Boolean estado) {
         this.estado = estado;
+        System.out.println("Comentario a borrar");
     }
     
      
