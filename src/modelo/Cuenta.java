@@ -19,7 +19,7 @@ public class Cuenta {
         this.clave = clave;
         this.estado = estado;
     }
-
+    
     public Integer getId() {
         return id;
     }
