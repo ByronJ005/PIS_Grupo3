@@ -17,7 +17,6 @@ public class FrmMalla extends javax.swing.JFrame {
 
     private MallaControllerListas mcl = new MallaControllerListas();
     private ModeloTablaMallaListas mtml = new ModeloTablaMallaListas();
-    private Boolean estado;
         
     /**
      * Creates new form FrmCurso
@@ -78,8 +77,8 @@ public class FrmMalla extends javax.swing.JFrame {
         txtFechaCreacion.setText(new  SimpleDateFormat("dd / MM / yy").format(new Date()));
         txtBusquedaFecha.setText("dd / MM / yy");
         cbxCriterio.setSelectedItem("NOMBRE");
-        checkBoxVigente.setSelected(false);
-        checkBoxDeshabilitado.setSelected(false);
+        checkBoxVigente.setSelected(true);
+        checkBoxVigente.setEnabled(false);
         mcl.setMalla(null);
         mcl.setMallas(new LinkedList<>());
         cargarTabla();
@@ -99,9 +98,7 @@ public class FrmMalla extends javax.swing.JFrame {
     }
     
     private Boolean validar() {
-        return !txtNombre.getText().trim().isEmpty() &&
-                    !checkBoxVigente.getText().trim().isEmpty() &&
-                    !checkBoxDeshabilitado.getText().trim().isEmpty();
+        return !txtNombre.getText().trim().isEmpty();
     }        
     
     private void guardar() {
@@ -112,9 +109,9 @@ public class FrmMalla extends javax.swing.JFrame {
                 mcl.getMalla().setModalidad(cbxModalidad.getSelectedItem().toString());
                 mcl.getMalla().setFecha_Creacion(new SimpleDateFormat("dd / MM / yy").parse(txtFechaCreacion.getText()));
                 if (checkBoxVigente.isSelected()) {
-                    mcl.getMalla().setEstado(estado);
+                    mcl.getMalla().setEstado(true);
                 } else {
-                    mcl.getMalla().setEstado(estado);
+                    mcl.getMalla().setEstado(false);
                 }
                
                 
@@ -170,7 +167,7 @@ public class FrmMalla extends javax.swing.JFrame {
                 txtFechaCreacion.setText(new SimpleDateFormat("dd / MM / yy").format(mcl.getMalla().getFecha_Creacion()));
                 cbxModalidad.setSelectedItem(mcl.getMalla().getModalidad());   
                 checkBoxVigente.setSelected(mcl.getMalla().getEstado().equals(true));
-                checkBoxDeshabilitado.setSelected(mcl.getMalla().getEstado().equals(false));
+                checkBoxVigente.setEnabled(true);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, 
                         e.getMessage(), 
@@ -204,7 +201,6 @@ public class FrmMalla extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         cbxModalidad = new javax.swing.JComboBox<>();
         checkBoxVigente = new javax.swing.JCheckBox();
-        checkBoxDeshabilitado = new javax.swing.JCheckBox();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblTabla = new javax.swing.JTable();
@@ -328,26 +324,10 @@ public class FrmMalla extends javax.swing.JFrame {
         jPanel3.add(cbxModalidad, gridBagConstraints);
 
         checkBoxVigente.setText("Vigente");
-        checkBoxVigente.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                checkBoxVigenteItemStateChanged(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 4;
         jPanel3.add(checkBoxVigente, gridBagConstraints);
-
-        checkBoxDeshabilitado.setText("Deshabilitado");
-        checkBoxDeshabilitado.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                checkBoxDeshabilitadoItemStateChanged(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 6;
-        gridBagConstraints.gridy = 4;
-        jPanel3.add(checkBoxDeshabilitado, gridBagConstraints);
 
         jPanel1.add(jPanel3, java.awt.BorderLayout.PAGE_START);
 
@@ -520,20 +500,6 @@ public class FrmMalla extends javax.swing.JFrame {
         buscar();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    private void checkBoxVigenteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkBoxVigenteItemStateChanged
-        if (evt.getStateChange() == ItemEvent.SELECTED) {
-            checkBoxDeshabilitado.setSelected(false);
-            estado = true;
-        }
-    }//GEN-LAST:event_checkBoxVigenteItemStateChanged
-
-    private void checkBoxDeshabilitadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkBoxDeshabilitadoItemStateChanged
-        if (evt.getStateChange() == ItemEvent.SELECTED) {
-            checkBoxVigente.setSelected(false);
-            estado = false;
-        }
-    }//GEN-LAST:event_checkBoxDeshabilitadoItemStateChanged
-
     /**
      * @param args the command line arguments
      */
@@ -592,7 +558,6 @@ public class FrmMalla extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbxAscDesc;
     private javax.swing.JComboBox<String> cbxCriterio;
     private javax.swing.JComboBox<String> cbxModalidad;
-    private javax.swing.JCheckBox checkBoxDeshabilitado;
     private javax.swing.JCheckBox checkBoxVigente;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
