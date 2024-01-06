@@ -1,7 +1,15 @@
 package vista;
+import com.toedter.calendar.JCalendar;
 import controlador.DocenteControlador;
 import controlador.EstudianteControlador;
+import controlador.TDALista.LinkedList;
+import controlador.TDALista.exceptions.VacioException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import modelo.Docente;
+import modelo.Estudiante;
+import vista.Util.Util;
 import vista.tablas.DocenteModeloTabla;
 import vista.tablas.EstudianteModeloTabla;
 
@@ -10,6 +18,7 @@ import vista.tablas.EstudianteModeloTabla;
  *
  * @author Asus
  */
+
 public class FrmDocente extends javax.swing.JFrame {
     private DocenteControlador dc = new DocenteControlador();
     private DocenteModeloTabla dt = new DocenteModeloTabla(dc.getDocentes());
@@ -20,9 +29,147 @@ public class FrmDocente extends javax.swing.JFrame {
      */
     public FrmDocente() {
         initComponents();
-        //limpiar();
+        limpiar();
     }
-
+    
+    private void Ordenar(Integer type, String atribute) throws VacioException{
+            dt.setDocentes(dc.ordenarQuickSort(dc.getDocentes(), type, atribute));
+            table.setModel(dt);
+            table.updateUI();
+    }
+    
+    private void busqueda(String metodo) throws Exception {    
+        if (metodo.equalsIgnoreCase("id") || metodo.equalsIgnoreCase("cedula")){
+            if (metodo.equalsIgnoreCase("id")){
+                Integer id = Integer.parseInt(txtBusqueda.getText().toString());
+                dt.setDocentes(Util.retornarDocente(dc.BusquedaID(dc.getDocentes(), id, metodo)));
+            } else if (metodo.equalsIgnoreCase("cedula")) { 
+                String cedula = txtBusqueda.getText().toString();
+                dt.setDocentes(Util.retornarDocente(dc.BusquedaCedula(dc.getDocentes(), cedula, metodo)));
+            }        
+        } else {
+            if (metodo.equalsIgnoreCase("nombres")) {
+                String nombres = txtBusqueda.getText().toString();
+                dt.setDocentes(dc.buscarNombres(dc.getDocentes(), metodo, nombres));
+            } else if (metodo.equalsIgnoreCase("apellidos")) { 
+                String apellidos = txtBusqueda.getText().toString();
+                dt.setDocentes(dc.buscarApellidos(dc.getDocentes(), metodo, apellidos));
+            } else {
+                String tituloTN = txtBusqueda.getText().toString();
+                dt.setDocentes(dc.buscarTituloTercerN(dc.getDocentes(), metodo, tituloTN));
+            }
+        }
+        table.setModel(dt);
+        table.updateUI();
+    }
+    
+    private void limpiar(){
+        cargarTabla();
+        txtapellidos.setText("");
+        txtTituloTercer.setText("");
+        txtdni.setText("");
+        txtNombres.setText("");
+        txtNacionalidad.setText("");
+        txtTelefono.setText("");
+        txtTituloCuarto.setText("");
+        txtAnioE.setText("");
+        dc.setDocente(null);
+        dc.setDocentes(new LinkedList<Docente>());
+        cargarTabla();
+        table.clearSelection();
+    }
+    
+    private void cargarTabla(){
+        dt.setDocentes(dc.getDocentes());
+        table.setModel(dt);
+        table.updateUI();
+    }
+    
+    private Boolean validar (){
+        return !txtapellidos.getText().trim().isEmpty() &&
+                !txtAnioE.getText().trim().isEmpty() &&
+                !txtdni.getText().trim().isEmpty() &&
+                !txtNombres.getText().trim().isEmpty() &&
+                !txtNacionalidad.getText().trim().isEmpty() &&
+                !txtTelefono.getText().trim().isEmpty() &&
+                !txtTituloCuarto.getText().trim().isEmpty() &&
+                !txtTituloTercer.getText().trim().isEmpty();
+    }
+    
+    private void cargarVista() {
+        fila = table.getSelectedRow();
+        if (fila < 0){
+            JOptionPane.showMessageDialog(null, "Seleccione una fila porfavor"
+            , "ERROR"
+            , JOptionPane.ERROR_MESSAGE);
+        } else {
+            try {
+                dc.setDocente(dt.getDocentes().get(fila));
+                txtapellidos.setText(dc.getDocente().getApellidos());
+                txtNombres.setText(dc.getDocente().getNombres());
+                calendar.setDate(dc.getDocente().getFecha_nac());
+                txtNacionalidad.setText(dc.getDocente().getNacionalidad());
+                txtdni.setText(dc.getDocente().getCedula());
+                txtTelefono.setText(dc.getDocente().getTelefono());
+                txtTituloCuarto.setText(dc.getDocente().getTitulo_cuartoNivel());
+                txtTituloTercer.setText(dc.getDocente().getTitulo_tercerNivel());
+                txtAnioE.setText(String.valueOf(dc.getDocente().getAnios_exp_docente()));
+            } catch (Exception e) {
+                System.out.println("EEORR" + e.getMessage());
+            }
+            
+        }
+            
+    }
+    
+    private void obtenerDocente(){
+        dc.getDocente().setNombres(txtNombres.getText().toString());
+        dc.getDocente().setApellidos(txtapellidos.getText().toString());
+        dc.getDocente().setCedula(txtdni.getText().toString());
+        dc.getDocente().setFecha_nac(calendar.getDate());
+        dc.getDocente().setTelefono(txtTelefono.getText().toString());
+        dc.getDocente().setNacionalidad(txtNacionalidad.getText().toString()); 
+        dc.getDocente().setTitulo_cuartoNivel(txtTituloCuarto.getText().toString());
+        dc.getDocente().setTitulo_tercerNivel(txtTituloTercer.getText().toString());
+        dc.getDocente().setAnios_exp_docente(Integer.parseInt(txtAnioE.getText().toString()));
+    }
+    
+    private void save(){
+        if (validar()) {
+            try {
+                obtenerDocente();
+                    if (dc.getDocente().getId() == null){
+                        if (dc.guardar()){
+                            limpiar();
+                            JOptionPane.showMessageDialog(null, "Se ha guardado Correctamente");
+                            dc.setDocente(null);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "No se ha podido Guardar");
+                        }
+                            
+                    } else {
+                        if (dc.modificar(fila)){
+                            limpiar();
+                            JOptionPane.showMessageDialog(null, "Se ha modificado correctamente");
+                            dc.setDocente(null);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error no se pudo mofidicar",
+                                    "ERROR",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }            
+                    }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "error " + e.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingrese todos los campos Porfavor",
+                    "ERROR",
+                    JOptionPane.ERROR_MESSAGE);
+        } 
+    }
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -59,7 +206,17 @@ public class FrmDocente extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
-        btncancelar1 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        cbxOrdenarPor = new javax.swing.JComboBox<>();
+        cnxBuscarPor = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
+        cbxtipo = new javax.swing.JComboBox<>();
+        txtBusqueda = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        btmSeleccionar1 = new javax.swing.JButton();
+        btmBuscar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestión de Docentes");
@@ -197,27 +354,28 @@ public class FrmDocente extends javax.swing.JFrame {
                             .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtdni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel35)
-                            .addComponent(jLabel33)
-                            .addComponent(jLabel31)
-                            .addComponent(jLabel39)
-                            .addComponent(txtTituloTercer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNombres, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtdni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel35)
+                                .addComponent(jLabel33)
+                                .addComponent(jLabel31)
+                                .addComponent(jLabel39)
+                                .addComponent(txtTituloTercer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(7, 7, 7)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel34)
                                     .addComponent(txtapellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(34, 34, 34)
+                                .addGap(27, 27, 27)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(btncancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnguardar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(15, 15, 15))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGap(0, 6, Short.MAX_VALUE)
                                 .addComponent(calendar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
         );
 
@@ -237,12 +395,98 @@ public class FrmDocente extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(table);
 
-        btncancelar1.setBackground(new java.awt.Color(0, 204, 153));
-        btncancelar1.setFont(new java.awt.Font("SimSun-ExtB", 1, 18)); // NOI18N
-        btncancelar1.setText("Selecc.");
-        btncancelar1.addActionListener(new java.awt.event.ActionListener() {
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Ordenar y Buscar"));
+
+        jLabel1.setText("Ordenar Por:");
+
+        jLabel2.setText("Buscar Por:");
+
+        cbxOrdenarPor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "id", "nombres", "apellidos", "fecha_nac", "anios_exp_docente" }));
+        cbxOrdenarPor.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxOrdenarPorItemStateChanged(evt);
+            }
+        });
+
+        cnxBuscarPor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "id", "nombres", "apellidos", "cedula", "titulo_tercerNivel", "" }));
+
+        jLabel3.setText("Tipo");
+
+        cbxtipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ascendente", "Descendente" }));
+        cbxtipo.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxtipoItemStateChanged(evt);
+            }
+        });
+
+        jLabel4.setText("Busqueda");
+
+        btmSeleccionar1.setBackground(new java.awt.Color(0, 204, 153));
+        btmSeleccionar1.setFont(new java.awt.Font("SimSun-ExtB", 1, 18)); // NOI18N
+        btmSeleccionar1.setText("Buscar");
+        btmSeleccionar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btncancelar1ActionPerformed(evt);
+                btmSeleccionar1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(21, 21, 21)
+                            .addComponent(cbxOrdenarPor, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel1)
+                                .addComponent(jLabel2))))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btmSeleccionar1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cnxBuscarPor, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(68, 68, 68)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel3)
+                        .addComponent(cbxtipo, 0, 179, Short.MAX_VALUE)
+                        .addComponent(txtBusqueda))
+                    .addComponent(jLabel4))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbxOrdenarPor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxtipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cnxBuscarPor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addComponent(btmSeleccionar1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(53, Short.MAX_VALUE))
+        );
+
+        btmBuscar.setBackground(new java.awt.Color(0, 204, 153));
+        btmBuscar.setFont(new java.awt.Font("SimSun-ExtB", 1, 18)); // NOI18N
+        btmBuscar.setText("Seleccionar");
+        btmBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btmBuscarActionPerformed(evt);
             }
         });
 
@@ -254,18 +498,26 @@ public class FrmDocente extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 620, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btncancelar1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(btmBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btncancelar1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 7, Short.MAX_VALUE)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btmBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(3, 3, 3))
         );
 
         javax.swing.GroupLayout panelPrincipalLayout = new javax.swing.GroupLayout(panelPrincipal);
@@ -286,7 +538,7 @@ public class FrmDocente extends javax.swing.JFrame {
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -309,17 +561,53 @@ public class FrmDocente extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btncancelar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelar1ActionPerformed
-        //cargarVista();
-    }//GEN-LAST:event_btncancelar1ActionPerformed
+    private void btmBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btmBuscarActionPerformed
+        cargarVista();
+    }//GEN-LAST:event_btmBuscarActionPerformed
 
     private void btncancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelarActionPerformed
-        //limpiar();
+        limpiar();
     }//GEN-LAST:event_btncancelarActionPerformed
 
     private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
-        //guardar();
+        save();
     }//GEN-LAST:event_btnguardarActionPerformed
+
+    private void cbxOrdenarPorItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxOrdenarPorItemStateChanged
+        int aux;
+        if (cbxtipo.getSelectedItem().toString().equalsIgnoreCase("Ascendente")){
+            aux = 0;
+        } else {
+            aux = 1;
+        }
+        try {
+            Ordenar(aux, cbxOrdenarPor.getSelectedItem().toString());
+        } catch (VacioException ex) {   
+            System.out.println("Hiustom, we have problems");
+        }
+    }//GEN-LAST:event_cbxOrdenarPorItemStateChanged
+
+    private void cbxtipoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxtipoItemStateChanged
+        int aux;
+        if (cbxtipo.getSelectedItem().toString().equalsIgnoreCase("Ascendente")){
+            aux = 0;
+        } else {
+            aux = 1;
+        }
+        try {
+            Ordenar(aux, cbxOrdenarPor.getSelectedItem().toString());
+        } catch (VacioException ex) {   
+            System.out.println("Hiustom, we have problems");
+        }
+    }//GEN-LAST:event_cbxtipoItemStateChanged
+
+    private void btmSeleccionar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btmSeleccionar1ActionPerformed
+        try {
+            busqueda(cnxBuscarPor.getSelectedItem().toString());
+        } catch (Exception ex) {
+            System.out.println("we have problem bb");
+        }
+    }//GEN-LAST:event_btmSeleccionar1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -360,10 +648,17 @@ public class FrmDocente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btmBuscar;
+    private javax.swing.JButton btmSeleccionar1;
     private javax.swing.JButton btncancelar;
-    private javax.swing.JButton btncancelar1;
     private javax.swing.JButton btnguardar;
     private com.toedter.calendar.JCalendar calendar;
+    private javax.swing.JComboBox<String> cbxOrdenarPor;
+    private javax.swing.JComboBox<String> cbxtipo;
+    private javax.swing.JComboBox<String> cnxBuscarPor;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
@@ -373,6 +668,8 @@ public class FrmDocente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
@@ -380,6 +677,7 @@ public class FrmDocente extends javax.swing.JFrame {
     private javax.swing.JPanel panelPrincipal;
     private javax.swing.JTable table;
     private javax.swing.JTextField txtAnioE;
+    private javax.swing.JTextField txtBusqueda;
     private javax.swing.JTextField txtNacionalidad;
     private javax.swing.JTextField txtNombres;
     private javax.swing.JTextField txtTelefono;
