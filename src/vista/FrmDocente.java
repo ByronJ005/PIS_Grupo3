@@ -605,7 +605,8 @@ public class FrmDocente extends javax.swing.JFrame {
         try {
             busqueda(cnxBuscarPor.getSelectedItem().toString());
         } catch (Exception ex) {
-            System.out.println("we have problem bb");
+            System.out.println("we have problems" + ex.getMessage());
+
         }
     }//GEN-LAST:event_btmSeleccionar1ActionPerformed
 
