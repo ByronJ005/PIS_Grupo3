@@ -16,7 +16,7 @@ import modelo.Cursa;
  */
 public class CursaController extends DataAccesObject<Cursa>{
     
-    public CursaController(Class<Cursa> clazz) {
+    public CursaController() {
         super(Cursa.class);
     }
     private Cursa cursa = new Cursa();
@@ -225,5 +225,33 @@ public class CursaController extends DataAccesObject<Cursa>{
      */
     public void setCursas(LinkedList<Cursa> cursas) {
         this.cursas = cursas;
+    }
+    public static void main(String[] args) {
+        CursaController cc = new CursaController();
+//        cc.getCursa().setId(cc.generated_id());
+//        cc.getCursa().setId_docente(2000);
+//        cc.getCursa().setId_materia(5000);
+//        cc.getCursa().setId_matricula(3000);
+//        cc.guardar();
+//        System.out.println(cc.listall().print());
+//        cc.setCursa(null);
+//        CursaController cc = new CursaController();
+//        cc.getCursa().setId(cc.generated_id());
+//        cc.getCursa().setId_docente(2001);
+//        cc.getCursa().setId_materia(5001);
+//        cc.getCursa().setId_matricula(3001);
+//        cc.guardar();
+//        System.out.println(cc.listall().print());
+//        cc.setCursa(null);
+//        cc.getCursa().setId(cc.generated_id());
+//        cc.getCursa().setId_docente(2002);
+//        cc.getCursa().setId_materia(5002);
+//        cc.getCursa().setId_matricula(3002);
+//        cc.guardar();
+//        System.out.println(cc.listall().print());
+//        cc.setCursa(null);
+
+
+        System.out.println(cc.quickSort(cc.getCursas(), 0, "id").print());
     }
 }

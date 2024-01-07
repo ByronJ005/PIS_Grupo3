@@ -52,6 +52,12 @@ public class Cursa {
     public void setId_materia(Integer id_materia) {
         this.id_materia = id_materia;
     }
+
+    @Override
+    public String toString() {
+        return "Cursa "+id+"--  Docente "+id_docente+"--  Matricula "+id_matricula+"--  Materia "+id_materia;
+    }
+    
     public Boolean comparar(Cursa c, String field, Integer type) {
         switch (type) {
             case 1:

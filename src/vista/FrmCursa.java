@@ -15,6 +15,8 @@ public class FrmCursa extends javax.swing.JFrame {
      */
     public FrmCursa() {
         initComponents();
+        setTitle("Cursas");
+        setLocationRelativeTo(null);
     }
 
     /**
