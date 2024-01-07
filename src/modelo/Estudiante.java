@@ -13,6 +13,11 @@ public class Estudiante extends Persona{
     public Boolean comparar(){
         return false;
     }
+    
+    public int compa(){
+       return 2;
+              
+    }
 
     public Estudiante() {
     }
