@@ -47,7 +47,7 @@ public class PeriodoAcademico {
         }
     }
     
-    public Integer esIgual(String field, Object valor){
+    public Integer esSimilar(String field, Object valor){
         if(field.equalsIgnoreCase("nombre")){
             String nomActual = getNombre().toLowerCase();
             if(nomActual.contains(valor.toString().toLowerCase()))

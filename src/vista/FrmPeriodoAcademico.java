@@ -1,6 +1,6 @@
 package vista;
 
-import controlador.PeriodoControllerListas;
+import controlador.PeriodoController;
 import controlador.TDALista.LinkedList;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -15,7 +15,7 @@ import vista.listas.tablas.ModeloTablaPeriodo;
  */
 public class FrmPeriodoAcademico extends javax.swing.JDialog {
     LinkedList<PeriodoAcademico> p = new LinkedList<>();
-    private PeriodoControllerListas pcl = new PeriodoControllerListas();
+    private PeriodoController pcl = new PeriodoController();
     private ModeloTablaPeriodo mtp = new ModeloTablaPeriodo();
     
     /**
