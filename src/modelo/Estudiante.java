@@ -9,6 +9,10 @@ import java.util.Date;
 public class Estudiante extends Persona{
     private String titulo_bachiller;
     private String ciudad_Procedencia;
+    
+    public Boolean comparar(){
+        return false;
+    }
 
     public Estudiante() {
     }
