@@ -11,7 +11,10 @@ public class Estudiante extends Persona{
     private String ciudad_Procedencia;
     
     public Boolean comparar(){
-        return false;
+        if (compa() == 2)
+            return false;
+        else 
+            return true;
     }
     
     public int compa(){
