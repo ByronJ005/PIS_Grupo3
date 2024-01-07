@@ -1,0 +1,26 @@
+{
+    "controlador.TDALista.LinkedList": {
+        "head": {
+            "data": {
+                "@class": "modelo.Cuenta",
+                "id": 1,
+                "correo": "ad.a@gmail.com",
+                "clave": 123,
+                "estado": true
+            },
+            "next": {
+                "data": {
+                    "@class": "modelo.Cuenta",
+                    "id": 2,
+                    "correo": "ad.b@gmail.com",
+                    "clave": 2004,
+                    "estado": true
+                }
+            }
+        },
+        "last": {
+            "@reference": "..\/head\/next"
+        },
+        "size": 2
+    }
+}

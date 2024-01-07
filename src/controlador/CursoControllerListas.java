@@ -49,7 +49,7 @@ public class CursoControllerListas extends DataAccesObject<Curso>{
     }
 
     /**
-     * @param curso the materia to set
+     * @param curso the curso to set
      */
     public void setCurso(Curso curso) {
         this.curso = curso;

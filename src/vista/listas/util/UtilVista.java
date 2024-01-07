@@ -3,10 +3,12 @@ package vista.listas.util;
 
 import controlador.CursoControllerListas;
 import controlador.MallaControllerListas;
+import controlador.RolControllerListas;
 import controlador.TDALista.exceptions.VacioException;
 import javax.swing.JComboBox;
 import modelo.Curso;
 import modelo.Malla;
+import modelo.Rol;
 
 /**
  *
@@ -37,4 +39,16 @@ public class UtilVista {
     public static Curso getComboCursos(JComboBox cbx) {
         return (Curso)cbx.getSelectedItem();
     }        
+    
+    public static void cargarRol(JComboBox cbxRol) throws VacioException {
+        RolControllerListas rc = new RolControllerListas();
+        cbxRol.removeAllItems();
+        for (int i = 0; i < rc.getRoles().getSize(); i++) {
+            cbxRol.addItem(rc.getRoles().get(i));
+        }
+    }  
+    
+    public static Rol getComboRoles(JComboBox cbx) {
+        return (Rol)cbx.getSelectedItem();
+    }          
 }

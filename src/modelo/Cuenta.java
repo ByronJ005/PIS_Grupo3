@@ -18,10 +18,41 @@ public class Cuenta {
         this.correo = correo;
         this.clave = clave;
         this.estado = estado;
-        //Comentario en rama Bayron
-        System.out.println("Cosas por borrar");
-        System.out.println("Cosas por borrar 2");
     }
+    
+    public Boolean comparar(Cuenta c, String field, Integer type) {
+        switch (type) {
+            case 1:
+                if (field.equalsIgnoreCase("id")) {
+                    return getId().intValue() > c.getId().intValue();
+                } 
+                else if (field.equalsIgnoreCase("correo")) {
+                    return  getCorreo().compareTo(c.getCorreo()) > 0;
+                }
+                else if (field.equalsIgnoreCase("clave")) {
+                    return getClave().compareTo(c.getClave()) > 0;
+                }
+                else if (field.equalsIgnoreCase("estado")) {
+                    return getEstado().compareTo(c.getEstado()) > 0;
+                }
+                
+            case 0:
+                if (field.equalsIgnoreCase("id")) {
+                    return getId().intValue() < c.getId().intValue();
+                } 
+                else if (field.equalsIgnoreCase("correo")) {
+                    return  getCorreo().compareTo(c.getCorreo()) < 0;
+                }
+                else if (field.equalsIgnoreCase("clave")) {
+                    return getClave().compareTo(c.getClave()) < 0;
+                }
+                else if (field.equalsIgnoreCase("estado")) {
+                    return getEstado().compareTo(c.getEstado()) < 0;
+                }         
+            default:
+                return null;
+        }
+    }      
 
     public Integer getId() {
         return id;
