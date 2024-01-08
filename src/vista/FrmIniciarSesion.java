@@ -237,10 +237,7 @@ public class FrmIniciarSesion extends javax.swing.JFrame {
             int idPorClave = rc.obtenerIdPorClave(rc.getCuentas(), clave);
             if (idPorCorreo == idPorClave && idPorCorreo != -1) {
                 if (cbxRol.getSelectedItem().equals("ADMINISTRADOR")) {
-                    int persona = rc.getCuentas().get(idPorCorreo).getId_persona();
-                    String nombres = ac.getAdministradores().get(persona).getNombres();
-                    String apellidos = ac.getAdministradores().get(persona).getApellidos();
-                    new FrmPrincipalAdministrador(nombres, apellidos).setVisible(true);
+                    new FrmPrincipalAdministrador().setVisible(true);
                     this.setVisible(false);
                 }
             } else {

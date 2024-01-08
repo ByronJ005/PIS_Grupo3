@@ -59,6 +59,7 @@ public class FrmCuenta extends javax.swing.JFrame {
                 } else {
                     ac.getAdministrador().setNombres(txtNombres.getText());
                     ac.getAdministrador().setApellidos(txtApellidos.getText());
+                    ac.getAdministrador().setId(ccl.generated_id());
                     ccl.getCuenta().setId_persona(ccl.generated_id());
                 }
 

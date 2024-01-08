@@ -198,6 +198,8 @@ public class EstudianteControlador extends DataAccesObject <Estudiante>{
         ec.getEstudiante().setId(2);
         ec.getEstudiante().setNombres("Alexis Ludeña");
         ec.guardar();
+
+        System.out.println("Subir a la ramaPrincipal");
     }    
     
 }

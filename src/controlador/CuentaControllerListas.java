@@ -177,13 +177,14 @@ public class CuentaControllerListas extends DataAccesObject<Cuenta>{
         return -1; // Devuelve -1 si no se encuentra ninguna cuenta con la clave ingresada
     } 
     
-//    public static Integer obtenerIdPorCorreoYClave(LinkedList<Cuenta> cuentas, String correo, String clave) {
-//        for (Cuenta cuenta : cuentas) {
-//            if (cuenta.getCorreo().equals(correo) && cuenta.getClave().equals(clave)) {
-//                return cuenta.getId();
-//            }
-//        }
-//        return -1; // Devuelve -1 si no se encuentra ninguna cuenta con el correo y la clave ingresados
-//    }
-//  
+    public int obtenerIdPorCorreoYClave(LinkedList<Cuenta> lista, String correo, String clave) throws Exception {
+        LinkedList<Cuenta> lo = this.quickSort(0, "id_persona", lista);
+        Cuenta[] c = lo.toArray(); 
+        for (int i = 0; i < lo.getSize(); i++) {
+            if (c[i].getCorreo().equals(correo) == c[i].getClave().toString().equals(clave)) {
+                return  c[i].getId_persona();
+            }
+        }        
+        return -1;
+    }
 }

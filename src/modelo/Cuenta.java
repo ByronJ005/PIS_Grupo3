@@ -22,7 +22,7 @@ public class Cuenta {
         this.estado = estado;
         this.id_rol = id_rol;
         this.id_persona = id_persona;
-    }
+    }   
 
     public Boolean comparar(Cuenta c, String field, Integer type) {
         switch (type) {
