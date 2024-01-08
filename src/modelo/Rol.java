@@ -2,7 +2,7 @@ package modelo;
 
 /**
  *
- * @author Asus
+ * @author alexg
  */
 public class Rol {
     private Integer id;
@@ -14,6 +14,11 @@ public class Rol {
     public Rol(Integer id, String nombre) {
         this.id = id;
         this.nombre = nombre;
+    }
+
+    @Override
+    public String toString() {
+        return nombre; 
     }
     
     public Boolean comparar(Rol c, String field, Integer type) {
@@ -55,5 +60,4 @@ public class Rol {
         this.nombre = nombre;
     }
 
-    
 }

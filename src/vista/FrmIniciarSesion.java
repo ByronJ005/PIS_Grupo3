@@ -2,9 +2,9 @@
 package vista;
 
 import controlador.CuentaControllerListas;
-import controlador.TDALista.LinkedList;
 import java.awt.Color;
 import javax.swing.JOptionPane;
+import vista.listas.util.UtilVista;
 
 
 /**
@@ -234,7 +234,7 @@ public class FrmIniciarSesion extends javax.swing.JFrame {
             int idPorClave = rc.obtenerIdPorClave(rc.getCuentas(), clave);
             if (idPorCorreo == idPorClave && idPorCorreo != -1) {
                 if (cbxRol.getSelectedItem().equals("ADMINISTRADOR")) {
-                    new FrmPrincipalAdministrador(correo).setVisible(true);
+                    new FrmPrincipalAdministrador().setVisible(true);
                     this.setVisible(false);
                 }
             } else {

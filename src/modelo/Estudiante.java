@@ -19,6 +19,60 @@ public class Estudiante extends Persona{
         this.ciudad_Procedencia = ciudad_Procedencia;
     }
 
+    @Override
+    public String toString() {
+        return super.getNombres();
+    }
+    
+    public Boolean comparar(Estudiante e, Integer type, String field, Integer aux){
+        if (type == 0)
+            type = 1;
+        else 
+            type = 0;
+        return comparar(e, type, field);
+    }    
+    
+    public Boolean comparar(Estudiante e, Integer type, String field){
+        switch (type) {
+            case 1:
+                if (field.equalsIgnoreCase("id"))
+                    return getId().intValue() > e.getId().intValue();
+                else if (field.equalsIgnoreCase("nombres"))
+                    return getNombres().compareToIgnoreCase(e.getNombres()) > 0;
+                else if (field.equalsIgnoreCase("apellidos"))
+                    return getApellidos().compareToIgnoreCase(e.getApellidos()) > 0;
+                else if (field.equalsIgnoreCase("cedula"))
+                    return getCedula().compareToIgnoreCase(e.getCedula()) > 0;
+                else if (field.equalsIgnoreCase("fecha_nac"))
+                    return getFecha_nac().compareTo(e.getFecha_nac()) > 0;
+                else if (field.equalsIgnoreCase("nacionalidad"))
+                    return getNacionalidad().compareToIgnoreCase(e.getNacionalidad()) > 0;
+                else if (field.equalsIgnoreCase("tituloBachiller"))
+                    return getTitulo_bachiller().compareToIgnoreCase(e.getTitulo_bachiller()) > 0;
+                else if (field.equalsIgnoreCase("ciudadProcedencia"))
+                    return getCiudad_Procedencia().compareToIgnoreCase(e.getCiudad_Procedencia()) > 0;
+            case 0:
+                if (field.equalsIgnoreCase("id"))
+                    return getId().intValue() < e.getId().intValue();
+                else if (field.equalsIgnoreCase("nombre"))
+                    return getNombres().compareToIgnoreCase(e.getNombres()) < 0;
+                else if (field.equalsIgnoreCase("apellidos"))
+                    return getApellidos().compareToIgnoreCase(e.getApellidos()) < 0;
+                else if (field.equalsIgnoreCase("cedula"))
+                    return getCedula().compareToIgnoreCase(e.getCedula()) < 0;
+                else if (field.equalsIgnoreCase("fecha_nac"))
+                    return getFecha_nac().compareTo(e.getFecha_nac()) < 0;
+                else if (field.equalsIgnoreCase("nacionalidad"))
+                    return getNacionalidad().compareToIgnoreCase(e.getNacionalidad()) < 0;
+                else if (field.equalsIgnoreCase("tituloBachiller"))
+                    return getTitulo_bachiller().compareToIgnoreCase(e.getTitulo_bachiller()) > 0;
+                else if (field.equalsIgnoreCase("ciudadProcedencia"))
+                    return getCiudad_Procedencia().compareToIgnoreCase(e.getCiudad_Procedencia()) > 0;
+            default:
+                return false;
+        }
+    }    
+
     public String getTitulo_bachiller() {
         return titulo_bachiller;
     }

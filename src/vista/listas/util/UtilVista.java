@@ -1,12 +1,18 @@
 
 package vista.listas.util;
 
+import controlador.AdministradorControlador;
 import controlador.CursoControllerListas;
+import controlador.DocenteControlador;
+import controlador.EstudianteControlador;
 import controlador.MallaControllerListas;
 import controlador.RolControllerListas;
 import controlador.TDALista.exceptions.VacioException;
 import javax.swing.JComboBox;
+import modelo.Administrador;
 import modelo.Curso;
+import modelo.Docente;
+import modelo.Estudiante;
 import modelo.Malla;
 import modelo.Rol;
 
@@ -50,5 +56,42 @@ public class UtilVista {
     
     public static Rol getComboRoles(JComboBox cbx) {
         return (Rol)cbx.getSelectedItem();
-    }          
+    }      
+
+    public static void cargarEstudiante(JComboBox cbxEstudiante) throws VacioException {
+        EstudianteControlador ec = new EstudianteControlador();
+        cbxEstudiante.removeAllItems();
+        for (int i = 0; i < ec.getEstudiantes().getSize(); i++) {
+            cbxEstudiante.addItem(ec.getEstudiantes().get(i));
+        }
+    }  
+    
+    public static Estudiante getComboEstudiantes(JComboBox cbx) {
+        return (Estudiante)cbx.getSelectedItem();
+    }  
+    
+    public static void cargarDocente(JComboBox cbxDocente) throws VacioException {
+        DocenteControlador dc = new DocenteControlador();
+        cbxDocente.removeAllItems();
+        for (int i = 0; i < dc.getDocentes().getSize(); i++) {
+            cbxDocente.addItem(dc.getDocentes().get(i));
+        }
+    }  
+    
+    public static Docente getComboDocentes(JComboBox cbx) {
+        return (Docente)cbx.getSelectedItem();
+    }     
+    
+    public static void cargarAdministrador(JComboBox cbxAdministrador) throws VacioException {
+        AdministradorControlador ac = new AdministradorControlador();
+        cbxAdministrador.removeAllItems();
+        for (int i = 0; i < ac.getAdministradores().getSize(); i++) {
+            cbxAdministrador.addItem(ac.getAdministradores().get(i));
+        }
+    }  
+    
+    public static Administrador getAdministradores(JComboBox cbx) {
+        return (Administrador)cbx.getSelectedItem();
+    }    
+    
 }

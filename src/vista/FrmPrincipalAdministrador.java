@@ -14,10 +14,9 @@ public class FrmPrincipalAdministrador extends javax.swing.JFrame {
     /**
      * Creates new form FrmPrincipalAdministrador
      */
-    public FrmPrincipalAdministrador(String correo) {
+    public FrmPrincipalAdministrador() {
         initComponents();
         this.setLocationRelativeTo(null);
-        jblNombre.setText(correo);
     }
 
     /**
@@ -288,8 +287,9 @@ public class FrmPrincipalAdministrador extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                String correo = null;
-                new FrmPrincipalAdministrador(correo).setVisible(true);
+                String nombres = null;
+                String apellidos = null;
+                new FrmPrincipalAdministrador().setVisible(true);
             }
         });
     }

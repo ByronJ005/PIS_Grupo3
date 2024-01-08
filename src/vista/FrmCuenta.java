@@ -2,8 +2,12 @@
 package vista;
 
 import controlador.CuentaControllerListas;
+import controlador.TDALista.exceptions.VacioException;
 import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import vista.listas.util.UtilVista;
 
 /**
  *
@@ -19,6 +23,13 @@ public class FrmCuenta extends javax.swing.JFrame {
     public FrmCuenta() {
         initComponents();
         this.setLocationRelativeTo(null);
+        try {
+            UtilVista.cargarRol(cbxRol);
+            UtilVista.cargarEstudiante(cbxEstudiante);
+            UtilVista.cargarDocente(cbxDocente);
+        } catch (VacioException ex) {
+            Logger.getLogger(FrmCuenta.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }     
        
     private Boolean validar() {
@@ -32,7 +43,15 @@ public class FrmCuenta extends javax.swing.JFrame {
                 ccl.getCuenta().setCorreo(txtCorreo.getText());
                 ccl.getCuenta().setClave(String.valueOf(txtClave.getPassword()));
                 ccl.getCuenta().setEstado(true);
-                
+                ccl.getCuenta().setId_rol(UtilVista.getComboRoles(cbxRol).getId());
+                if (cbxEstudiante.getSelectedItem() != null) {
+                    ccl.getCuenta().setId_persona(UtilVista.getComboEstudiantes(cbxEstudiante).getId());
+                } else if (cbxDocente.getSelectedItem() != null) {
+                    ccl.getCuenta().setId_persona(UtilVista.getComboDocentes(cbxDocente).getId());
+                } else {
+                    ccl.getCuenta().setId_persona(ccl.generated_id());
+                }
+
                 if (ccl.getCuenta().getId() == null) {
                     if (ccl.save()) {
                         JOptionPane.showMessageDialog(null, 
@@ -63,16 +82,26 @@ public class FrmCuenta extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         btnCrearCuenta = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        txtCorreo = new javax.swing.JTextField();
+        txtApellidos = new javax.swing.JTextField();
         txtClave = new javax.swing.JPasswordField();
         jLabel6 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        txtCorreo = new javax.swing.JTextField();
+        txtNombres = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        cbxEstudiante = new javax.swing.JComboBox<>();
+        cbxRol = new javax.swing.JComboBox<>();
+        jLabel10 = new javax.swing.JLabel();
+        cbxDocente = new javax.swing.JComboBox<>();
         jButton8 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
 
@@ -104,16 +133,16 @@ public class FrmCuenta extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Harlow Solid Italic", 1, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 153));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("Contraseña:");
+        jLabel5.setText("Buscar:");
 
-        txtCorreo.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        txtCorreo.setForeground(new java.awt.Color(204, 204, 204));
-        txtCorreo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtCorreo.setText("Ingrese su correo institucional");
-        txtCorreo.setBorder(null);
-        txtCorreo.addMouseListener(new java.awt.event.MouseAdapter() {
+        txtApellidos.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        txtApellidos.setForeground(new java.awt.Color(204, 204, 204));
+        txtApellidos.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtApellidos.setText("Ingrese sus apellidos");
+        txtApellidos.setBorder(null);
+        txtApellidos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                txtCorreoMousePressed(evt);
+                txtApellidosMousePressed(evt);
             }
         });
 
@@ -134,62 +163,148 @@ public class FrmCuenta extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\alexg\\OneDrive\\Desktop\\Tercer Ciclo\\PIS_Grupo3-master\\src\\icono\\usuario_sesion.png")); // NOI18N
 
+        jLabel7.setFont(new java.awt.Font("Harlow Solid Italic", 1, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Apellidos:");
+
+        jLabel8.setFont(new java.awt.Font("Harlow Solid Italic", 1, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("Nombres:");
+
+        txtCorreo.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        txtCorreo.setForeground(new java.awt.Color(204, 204, 204));
+        txtCorreo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtCorreo.setText("Ingrese un correo");
+        txtCorreo.setBorder(null);
+        txtCorreo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txtCorreoMousePressed(evt);
+            }
+        });
+
+        txtNombres.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        txtNombres.setForeground(new java.awt.Color(204, 204, 204));
+        txtNombres.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtNombres.setText("Ingrese sus nombres");
+        txtNombres.setBorder(null);
+        txtNombres.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txtNombresMousePressed(evt);
+            }
+        });
+
+        jLabel9.setFont(new java.awt.Font("Harlow Solid Italic", 1, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("Contraseña:");
+
+        cbxEstudiante.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        cbxRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxRol.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxRolItemStateChanged(evt);
+            }
+        });
+
+        jLabel10.setFont(new java.awt.Font("Harlow Solid Italic", 1, 18)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel10.setText("Usuario:");
+
+        cbxDocente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(88, 88, 88))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(107, 107, 107)
+                .addComponent(jLabel6))
             .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(53, 53, 53)
+                .addComponent(jLabel1)
+                .addGap(32, 32, 32)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(64, 64, 64)
-                        .addComponent(jLabel6))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(46, 46, 46)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(20, Short.MAX_VALUE)
+                    .addComponent(jLabel10)
+                    .addComponent(cbxRol, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel5)
+                .addGap(29, 29, 29)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addComponent(txtClave, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addComponent(btnCrearCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(47, 47, 47))))
+                    .addComponent(cbxEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(jLabel8))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(jLabel7))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(jLabel4))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(jLabel9))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(txtClave, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(83, 83, 83)
+                .addComponent(btnCrearCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addGap(37, 37, 37)
                 .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(6, 6, 6)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addGap(6, 6, 6)
+                        .addComponent(cbxRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbxEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbxDocente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(3, 3, 3)
+                .addComponent(jLabel8)
+                .addGap(6, 6, 6)
+                .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(jLabel7)
+                .addGap(6, 6, 6)
+                .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(6, 6, 6)
                 .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(12, 12, 12)
+                .addComponent(jLabel9)
+                .addGap(6, 6, 6)
                 .addComponent(txtClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(btnCrearCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnCrearCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 110, 260, 410));
+        jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 60, 300, 530));
 
         jButton8.setBackground(new java.awt.Color(204, 255, 255));
         jButton8.setIcon(new javax.swing.ImageIcon("C:\\Users\\alexg\\OneDrive\\Desktop\\salir.png")); // NOI18N
@@ -226,17 +341,28 @@ public class FrmCuenta extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_btnCrearCuentaActionPerformed
 
-    private void txtCorreoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtCorreoMousePressed
-        if (txtCorreo.getText().equals("Ingrese su correo institucional")) {
-            txtCorreo.setText("");
-            txtCorreo.setForeground(Color.black);
+    private void txtApellidosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtApellidosMousePressed
+        if (txtApellidos.getText().equals("Ingrese sus apellidos")) {
+            txtApellidos.setText("");
+            txtApellidos.setForeground(Color.black);
         }
+        
+        if (txtNombres.getText().isEmpty()) {
+            txtNombres.setText("Ingrese sus nombres");
+            txtNombres.setForeground(Color.gray);
+        }          
+        
+        if (txtCorreo.getText().isEmpty()) {
+            txtCorreo.setText("Ingrese un correo");
+            txtCorreo.setForeground(Color.gray);
+        }          
 
         if (String.valueOf(txtClave.getPassword()).isEmpty()) {
             txtClave.setText("**********************");
             txtClave.setForeground(Color.gray);
         }
-    }//GEN-LAST:event_txtCorreoMousePressed
+         
+    }//GEN-LAST:event_txtApellidosMousePressed
 
     private void txtClaveMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtClaveMousePressed
         if (String.valueOf(txtClave.getPassword()).equals("**********************")) {
@@ -244,16 +370,94 @@ public class FrmCuenta extends javax.swing.JFrame {
             txtClave.setForeground(Color.black);
         }
 
+        if (txtNombres.getText().isEmpty()) {
+            txtNombres.setText("Ingrese sus nombres");
+            txtNombres.setForeground(Color.gray);
+        }       
+        
+        if (txtApellidos.getText().isEmpty()) {
+            txtApellidos.setText("Ingrese sus apellidos");
+            txtApellidos.setForeground(Color.gray);
+        }          
+        
         if (txtCorreo.getText().isEmpty()) {
-            txtCorreo.setText("Ingrese su correo institucional");
+            txtCorreo.setText("Ingrese un correo");
             txtCorreo.setForeground(Color.gray);
-        }
+        }          
+
     }//GEN-LAST:event_txtClaveMousePressed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         new FrmIniciarSesion().setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void txtCorreoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtCorreoMousePressed
+        if (txtCorreo.getText().equals("Ingrese un correo")) {
+            txtCorreo.setText("");
+            txtCorreo.setForeground(Color.black);
+        }
+        
+        if (txtNombres.getText().isEmpty()) {
+            txtNombres.setText("Ingrese sus nombres");
+            txtNombres.setForeground(Color.gray);
+        }    
+        
+        if (txtApellidos.getText().isEmpty()) {
+            txtApellidos.setText("Ingrese sus apellidos");
+            txtApellidos.setForeground(Color.gray);
+        }               
+
+        if (String.valueOf(txtClave.getPassword()).isEmpty()) {
+            txtClave.setText("**********************");
+            txtClave.setForeground(Color.gray);
+        }
+         
+    }//GEN-LAST:event_txtCorreoMousePressed
+
+    private void txtNombresMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNombresMousePressed
+        if (txtNombres.getText().equals("Ingrese sus nombres")) {
+            txtNombres.setText("");
+            txtNombres.setForeground(Color.black);
+        }
+        
+        if (txtApellidos.getText().isEmpty()) {
+            txtApellidos.setText("Ingrese sus apellidos");
+            txtApellidos.setForeground(Color.gray);
+        }          
+        
+        if (txtCorreo.getText().isEmpty()) {
+            txtCorreo.setText("Ingrese un correo");
+            txtCorreo.setForeground(Color.gray);
+        }          
+
+        if (String.valueOf(txtClave.getPassword()).isEmpty()) {
+            txtClave.setText("**********************");
+            txtClave.setForeground(Color.gray);
+        }
+         
+    }//GEN-LAST:event_txtNombresMousePressed
+
+    private void cbxRolItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxRolItemStateChanged
+        if (evt.getItem().toString().equalsIgnoreCase("Admin")) {
+            txtNombres.setEnabled(true);
+            txtApellidos.setEnabled(true);
+            cbxEstudiante.setVisible(false);
+            cbxDocente.setVisible(false);
+        }
+        else if (evt.getItem().toString().equalsIgnoreCase("Docente")) {
+            txtNombres.setEnabled(false);
+            txtApellidos.setEnabled(false);
+            cbxDocente.setVisible(true);
+            cbxEstudiante.setVisible(false);
+        }
+        else if (evt.getItem().toString().equalsIgnoreCase("Estudiante")) {
+            txtNombres.setEnabled(false);
+            txtApellidos.setEnabled(false);
+            cbxDocente.setVisible(false);
+            cbxEstudiante.setVisible(true);    
+        }        
+    }//GEN-LAST:event_cbxRolItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -292,15 +496,24 @@ public class FrmCuenta extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCrearCuenta;
+    private javax.swing.JComboBox<String> cbxDocente;
+    private javax.swing.JComboBox<String> cbxEstudiante;
+    private javax.swing.JComboBox<String> cbxRol;
     private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JTextField txtApellidos;
     private javax.swing.JPasswordField txtClave;
     private javax.swing.JTextField txtCorreo;
+    private javax.swing.JTextField txtNombres;
     // End of variables declaration//GEN-END:variables
 }
