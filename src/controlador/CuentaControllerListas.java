@@ -177,4 +177,13 @@ public class CuentaControllerListas extends DataAccesObject<Cuenta>{
         return -1; // Devuelve -1 si no se encuentra ninguna cuenta con la clave ingresada
     } 
     
+//    public static Integer obtenerIdPorCorreoYClave(LinkedList<Cuenta> cuentas, String correo, String clave) {
+//        for (Cuenta cuenta : cuentas) {
+//            if (cuenta.getCorreo().equals(correo) && cuenta.getClave().equals(clave)) {
+//                return cuenta.getId();
+//            }
+//        }
+//        return -1; // Devuelve -1 si no se encuentra ninguna cuenta con el correo y la clave ingresados
+//    }
+//  
 }

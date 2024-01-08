@@ -1,12 +1,17 @@
 
 package vista;
 
+import controlador.AdministradorControlador;
 import controlador.CuentaControllerListas;
+import controlador.DocenteControlador;
+import controlador.EstudianteControlador;
 import controlador.TDALista.exceptions.VacioException;
 import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import modelo.Docente;
+import modelo.Estudiante;
 import vista.listas.util.UtilVista;
 
 /**
@@ -16,6 +21,7 @@ import vista.listas.util.UtilVista;
 public class FrmCuenta extends javax.swing.JFrame {
     
     private CuentaControllerListas ccl = new CuentaControllerListas();
+    private AdministradorControlador ac = new AdministradorControlador();
     
     /**
      * Creates new form FrmCuenta
@@ -23,6 +29,8 @@ public class FrmCuenta extends javax.swing.JFrame {
     public FrmCuenta() {
         initComponents();
         this.setLocationRelativeTo(null);
+        txtNombres.setEnabled(true);
+        txtApellidos.setEnabled(true);
         try {
             UtilVista.cargarRol(cbxRol);
             UtilVista.cargarEstudiante(cbxEstudiante);
@@ -49,6 +57,8 @@ public class FrmCuenta extends javax.swing.JFrame {
                 } else if (cbxDocente.getSelectedItem() != null) {
                     ccl.getCuenta().setId_persona(UtilVista.getComboDocentes(cbxDocente).getId());
                 } else {
+                    ac.getAdministrador().setNombres(txtNombres.getText());
+                    ac.getAdministrador().setApellidos(txtApellidos.getText());
                     ccl.getCuenta().setId_persona(ccl.generated_id());
                 }
 
@@ -201,6 +211,11 @@ public class FrmCuenta extends javax.swing.JFrame {
         jLabel9.setText("Contraseña:");
 
         cbxEstudiante.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxEstudiante.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxEstudianteItemStateChanged(evt);
+            }
+        });
 
         cbxRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbxRol.addItemListener(new java.awt.event.ItemListener() {
@@ -215,6 +230,11 @@ public class FrmCuenta extends javax.swing.JFrame {
         jLabel10.setText("Usuario:");
 
         cbxDocente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxDocente.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxDocenteItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -458,6 +478,28 @@ public class FrmCuenta extends javax.swing.JFrame {
             cbxEstudiante.setVisible(true);    
         }        
     }//GEN-LAST:event_cbxRolItemStateChanged
+
+    private void cbxEstudianteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxEstudianteItemStateChanged
+        Estudiante estudiante = null;
+        try {
+            estudiante = new EstudianteControlador().getEstudiantes().get(UtilVista.getComboEstudiantes(cbxEstudiante).getId() - 1);
+            txtNombres.setText(estudiante.getNombres());
+            txtApellidos.setText(estudiante.getApellidos());
+        } catch (Exception e) {
+            
+        }
+    }//GEN-LAST:event_cbxEstudianteItemStateChanged
+
+    private void cbxDocenteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxDocenteItemStateChanged
+        Docente docente = null;
+        try {
+            docente = new DocenteControlador().getDocentes().get(UtilVista.getComboDocentes(cbxDocente).getId() - 1);
+            txtNombres.setText(docente.getNombres());
+            txtApellidos.setText(docente.getApellidos());
+        } catch (Exception e) {
+            
+        }
+    }//GEN-LAST:event_cbxDocenteItemStateChanged
 
     /**
      * @param args the command line arguments
