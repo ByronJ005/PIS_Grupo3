@@ -96,7 +96,8 @@ public class EstudianteControlador extends DataAccesObject <Estudiante>{
             if (i < ultimo) {
                 ordenarQuickSort(estudiante, type, atribute, i, ultimo);
             }
-        es = es.toList(estudiante);        
+        es = es.toList(estudiante); 
+        System.out.println("resultado correcto");
         return es;
     }
     
