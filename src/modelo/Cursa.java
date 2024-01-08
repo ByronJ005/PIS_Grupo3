@@ -5,7 +5,7 @@ package modelo;
  * @author Asus
  */
 public class Cursa {
-   private Integer id;
+    private Integer id;
     private Integer id_matricula;
     private Integer id_materia;
     private Integer id_docente;
@@ -52,13 +52,7 @@ public class Cursa {
     public void setId_materia(Integer id_materia) {
         this.id_materia = id_materia;
     }
-
-    @Override
-    public String toString() {
-        return "Cursa "+id+"--  Docente "+id_docente+"--  Matricula "+id_matricula+"--  Materia "+id_materia;
-    }
-    
-    public Boolean comparar(Cursa c, String field, Integer type) {
+   public Boolean comparar(Cursa c, String field, Integer type) {
         switch (type) {
             case 1:
                 if (field.equalsIgnoreCase("id")) {
@@ -83,5 +77,6 @@ public class Cursa {
             default:
                 return null;
         }
-    }
+   }
+   
 }

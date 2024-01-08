@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package controlador.modelo;
+package controlador;
 
 import controlador.TDALista.LinkedList;
 import controlador.TDALista.exceptions.VacioException;
@@ -15,12 +15,13 @@ import modelo.Cursa;
  * @author apolo
  */
 public class CursaController extends DataAccesObject<Cursa>{
+    private Cursa cursa = new Cursa();
+    private LinkedList<Cursa> cursas = new LinkedList<>();
     
     public CursaController() {
         super(Cursa.class);
     }
-    private Cursa cursa = new Cursa();
-    private LinkedList<Cursa> cursas = new LinkedList<>();
+    
     
     public Boolean guardar() {
         cursa.setId(generated_id());

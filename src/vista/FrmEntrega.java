@@ -9,13 +9,20 @@ package vista;
  * @author apolo
  */
 public class FrmEntrega extends javax.swing.JFrame {
-
+    //RevisionController rc = new RevisionCnntroller();
     /**
      * Creates new form FrmRevision
      */
     public FrmEntrega() {
         initComponents();
+        setTitle("Realiza tu entrega");
+        setLocationRelativeTo(null);
+        
     }
+    public void cambiartxt(){
+        txtDescripcion.setText("hola me llamo tu pero pesadilla , amo la vida pero no me disgusta dar muerte");
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -29,7 +36,7 @@ public class FrmEntrega extends javax.swing.JFrame {
         jFileChooser1 = new javax.swing.JFileChooser();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        TituloTarea = new javax.swing.JLabel();
+        txtTituloTarea = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -37,7 +44,8 @@ public class FrmEntrega extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtDescripcion = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
@@ -55,10 +63,9 @@ public class FrmEntrega extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), "Revision", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Inter", 0, 14))); // NOI18N
 
-        TituloTarea.setFont(new java.awt.Font("JetBrains Mono NL", 0, 16)); // NOI18N
-        TituloTarea.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        TituloTarea.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icono/proyecto.png"))); // NOI18N
-        TituloTarea.setText("titulo tarea");
+        txtTituloTarea.setFont(new java.awt.Font("JetBrains Mono NL", 0, 16)); // NOI18N
+        txtTituloTarea.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtTituloTarea.setText("titulo tarea");
 
         jLabel2.setText("Estado de la Entrega:");
 
@@ -94,15 +101,22 @@ public class FrmEntrega extends javax.swing.JFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane3.setViewportView(jTextArea1);
+        txtDescripcion.setColumns(20);
+        txtDescripcion.setRows(5);
+        jScrollPane3.setViewportView(txtDescripcion);
+
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(TituloTarea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(txtTituloTarea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(39, 39, 39)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,11 +126,15 @@ public class FrmEntrega extends javax.swing.JFrame {
                             .addComponent(jScrollPane3))
                         .addGap(17, 17, 17))
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addGap(52, 52, 52))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
                             .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
@@ -124,7 +142,7 @@ public class FrmEntrega extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addComponent(TituloTarea)
+                .addComponent(txtTituloTarea)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -136,10 +154,12 @@ public class FrmEntrega extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel5)
-                .addGap(26, 26, 26)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 930, 890));
@@ -182,6 +202,11 @@ public class FrmEntrega extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        cambiartxt();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    
     /**
      * @param args the command line arguments
      */
@@ -219,7 +244,7 @@ public class FrmEntrega extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel TituloTarea;
+    private javax.swing.JButton jButton1;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -233,7 +258,8 @@ public class FrmEntrega extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JTextArea txtDescripcion;
+    private javax.swing.JLabel txtTituloTarea;
     // End of variables declaration//GEN-END:variables
 }

@@ -62,5 +62,5 @@ public class Matricula {
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
-    }   
+    }    
 }
